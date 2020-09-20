@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.apache.avro.generic.GenericData"/>
+<fullyQualifiedTypeName name="org.apache.parquet.avro.AvroParquetWriter"/>
+<fullyQualifiedTypeName name="org.apache.parquet.avro.AvroSchemaConverter"/>
+<fullyQualifiedTypeName name="org.apache.parquet.hadoop.ParquetReader"/>
+<fullyQualifiedTypeName name="org.apache.parquet.avro.AvroParquetReader"/>
+</qualifiedTypeNameHistroy>

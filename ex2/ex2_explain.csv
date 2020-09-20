@@ -1,0 +1,27 @@
+﻿"id","select_type","table","partitions","type","possible_keys","key","key_len","ref","rows","filtered","Extra"
+"1","PRIMARY","<derived2>",\N,"ALL",\N,\N,\N,\N,"61760","100.00","Using where; Using filesort"
+"1","PRIMARY","<derived11>",\N,"ref","<auto_key0>","<auto_key0>","203","main.post_menu","10","100.00",\N
+"11","DERIVED","<derived12>",\N,"ALL",\N,\N,\N,\N,"6173","100.00","Using where; Using temporary"
+"11","DERIVED","<derived16>",\N,"ref","<auto_key0>","<auto_key0>","133","pre.usr_no,pre.session_id,func","10","100.00","Using where"
+"16","DERIVED","T1",\N,"ALL",\N,\N,\N,\N,"649","100.00","Using where; Using temporary; Using filesort"
+"16","DERIVED","<derived18>",\N,"ref","<auto_key1>","<auto_key1>","43","kakaobank.T1.USR_NO","7","100.00",\N
+"16","DERIVED","<derived19>",\N,"ref","<auto_key2>","<auto_key2>","8","a.login_num","12","11.11","Using where"
+"19","DERIVED","menu_log",\N,"ALL",\N,\N,\N,\N,"649","10.00","Using where; Using filesort"
+"18","DERIVED","menu_log",\N,"ALL",\N,\N,\N,\N,"649","10.00","Using where; Using filesort"
+"12","DERIVED","T1",\N,"ALL",\N,\N,\N,\N,"649","100.00","Using where; Using temporary; Using filesort"
+"12","DERIVED","<derived14>",\N,"ref","<auto_key1>","<auto_key1>","43","kakaobank.T1.USR_NO","7","100.00",\N
+"12","DERIVED","<derived15>",\N,"ref","<auto_key2>","<auto_key2>","8","a.login_num","12","11.11","Using where"
+"15","DERIVED","menu_log",\N,"ALL",\N,\N,\N,\N,"649","10.00","Using where; Using filesort"
+"14","DERIVED","menu_log",\N,"ALL",\N,\N,\N,\N,"649","10.00","Using where; Using filesort"
+"2","DERIVED","<derived3>",\N,"ALL",\N,\N,\N,\N,"6173","100.00","Using where; Using temporary"
+"2","DERIVED","<derived7>",\N,"ref","<auto_key0>","<auto_key0>","133","pre.usr_no,pre.session_id,func","10","100.00","Using where"
+"7","DERIVED","T1",\N,"ALL",\N,\N,\N,\N,"649","100.00","Using where; Using temporary; Using filesort"
+"7","DERIVED","<derived9>",\N,"ref","<auto_key1>","<auto_key1>","43","kakaobank.T1.USR_NO","7","100.00",\N
+"7","DERIVED","<derived10>",\N,"ref","<auto_key2>","<auto_key2>","8","a.login_num","12","11.11","Using where"
+"10","DERIVED","menu_log",\N,"ALL",\N,\N,\N,\N,"649","10.00","Using where; Using filesort"
+"9","DERIVED","menu_log",\N,"ALL",\N,\N,\N,\N,"649","10.00","Using where; Using filesort"
+"3","DERIVED","T1",\N,"ALL",\N,\N,\N,\N,"649","100.00","Using where; Using temporary; Using filesort"
+"3","DERIVED","<derived5>",\N,"ref","<auto_key1>","<auto_key1>","43","kakaobank.T1.USR_NO","7","100.00",\N
+"3","DERIVED","<derived6>",\N,"ref","<auto_key2>","<auto_key2>","8","a.login_num","12","11.11","Using where"
+"6","DERIVED","menu_log",\N,"ALL",\N,\N,\N,\N,"649","10.00","Using where; Using filesort"
+"5","DERIVED","menu_log",\N,"ALL",\N,\N,\N,\N,"649","10.00","Using where; Using filesort"

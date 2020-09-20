@@ -1,0 +1,12 @@
+﻿"id","select_type","table","partitions","type","possible_keys","key","key_len","ref","rows","filtered","Extra"
+"1","PRIMARY","<derived5>",\N,"ALL",\N,\N,\N,\N,"160","100.00","Using where; Using temporary; Using filesort"
+"1","PRIMARY","<derived2>",\N,"ref","<auto_key0>","<auto_key0>","43","T2.usr_no","41","100.00",\N
+"5","DERIVED","<derived7>",\N,"ALL",\N,\N,\N,\N,"160","100.00",\N
+"7","DERIVED","a",\N,"ALL",\N,\N,\N,\N,"40","100.00","Using where; Using temporary"
+"7","DERIVED","<derived8>",\N,"ref","<auto_key0>","<auto_key0>","43","kakaobank.a.USR_NO","4","100.00",\N
+"8","DERIVED","usr_info_chg_log",\N,"ALL",\N,\N,\N,\N,"40","100.00","Using temporary"
+"6","DEPENDENT SUBQUERY","usr_info_chg_log",\N,"ref","PRIMARY","PRIMARY","58","b.pre_last_loc_dt","1","10.00","Using where"
+"2","DERIVED","a",\N,"ALL",\N,\N,\N,\N,"649","100.00","Using where; Using temporary"
+"2","DERIVED","<derived3>",\N,"ref","<auto_key0>","<auto_key0>","43","kakaobank.a.USR_NO","10","100.00",\N
+"3","DERIVED","<derived4>",\N,"ALL",\N,\N,\N,\N,"519","100.00","Using temporary"
+"4","DERIVED","menu_log",\N,"ALL",\N,\N,\N,\N,"649","80.00","Using where; Using temporary; Using filesort"

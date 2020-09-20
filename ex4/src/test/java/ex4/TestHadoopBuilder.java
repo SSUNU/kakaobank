@@ -146,7 +146,7 @@ public class TestHadoopBuilder {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			if("".equals(sourceTable.get("gijun_date").toString())) {
 				//Now()-1day
-	    		cal.add(Calendar.DATE,-1); //-1���� ������ �̵�
+	    		cal.add(Calendar.DATE,-1);
 			}
 			else {
 				//gijun_date - 1day
@@ -154,8 +154,8 @@ public class TestHadoopBuilder {
 				cal.add(Calendar.DATE,-1);
 			}
 			
-			String gijunStartDT = sdf.format(cal.getTime()) + "000000"; //���۽ð�
-			String gijunEndDT = sdf.format(cal.getTime()) + "235959"; //�������ð�
+			String gijunStartDT = sdf.format(cal.getTime()) + "000000"; //first time 
+			String gijunEndDT = sdf.format(cal.getTime()) + "235959"; //last time
 
     		//MySql
     		String url = "jdbc:mysql://localhost:3306/kakaobank?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false";

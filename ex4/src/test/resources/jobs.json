@@ -1,0 +1,9 @@
+[
+	{
+		"메뉴로그_ETL_Job": {
+			"concurrency": 3,
+			"source_table": {"table_name": "menu_log", "gijun_date" : "20190302"},
+			"target_table": {"schema_name": "menu_log" }
+		}
+	}
+]

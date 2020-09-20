@@ -12,10 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+
+import org.apache.avro.generic.GenericData;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
+import org.apache.parquet.avro.AvroParquetWriter;
+import org.apache.parquet.avro.AvroSchemaConverter;
 import org.apache.parquet.column.ParquetProperties;
 import org.apache.parquet.example.data.Group;
 import org.apache.parquet.example.data.simple.SimpleGroupFactory;
@@ -77,7 +81,6 @@ public class TestHadoopBuilder {
     	Connection conn = null;
     	Statement stmt = null;
     	ResultSet rs = null;
-    	ParquetWriter<Group> writer = null;
     	
     	try {
     		///////////Json Read
@@ -93,7 +96,7 @@ public class TestHadoopBuilder {
 			for (Object item : jArr) {
 				JSONObject jObj_root = (JSONObject)item;
 				
-				JSONObject jObj_child = (JSONObject)jObj_root.get("¸Þ´º·Î±×_ETL_Job");
+				JSONObject jObj_child = (JSONObject)jObj_root.get("MenuLog_ETL_Job");
 				concurrency = Integer.parseInt(jObj_child.get("concurrency").toString());
 				sourceTable = (JSONObject)jObj_child.get("source_table");
 				targetTable = (JSONObject)jObj_child.get("target_table");
@@ -113,47 +116,48 @@ public class TestHadoopBuilder {
 	        File outputParquetFile = new File(outputFilePath);
 	        Path path = new Path(outputParquetFile.toURI().toString()); //parquet path
 	        
-	        GroupWriteSupport.setSchema(schema, conf);
-	        SimpleGroupFactory gf = new SimpleGroupFactory(schema);
-	        writer = new ParquetWriter<Group>(
-	        		path,
-	        		new GroupWriteSupport(),
-	        		CompressionCodecName.SNAPPY,
-	        		ParquetWriter.DEFAULT_BLOCK_SIZE,
-	        		ParquetWriter.DEFAULT_PAGE_SIZE,
-	        		1048576,
-	        		true,
-	        		false,
-	        		ParquetProperties.WriterVersion.PARQUET_1_0,
-	        		conf);
+//	        GroupWriteSupport.setSchema(schema, conf);
+//	        SimpleGroupFactory gf = new SimpleGroupFactory(schema);
+//	        ParquetWriter<Group> writer = new ParquetWriter<Group>(
+//	        		path,
+//	        		new GroupWriteSupport(),
+//	        		CompressionCodecName.SNAPPY,
+//	        		ParquetWriter.DEFAULT_BLOCK_SIZE,
+//	        		ParquetWriter.DEFAULT_PAGE_SIZE,
+//	        		1048576,
+//	        		true,
+//	        		false,
+//	        		ParquetProperties.WriterVersion.PARQUET_1_0,
+//	        		conf);
 	        	
-//        	writer = AvroParquetWriter.<List<String>>builder(path)
-//                .withRowGroupSize(ParquetWriter.DEFAULT_BLOCK_SIZE)
-//                .withPageSize(ParquetWriter.DEFAULT_PAGE_SIZE)
-//                .withSchema(new AvroSchemaConverter().convert(schema))
-//                .withConf(conf)
-//                .withCompressionCodec(CompressionCodecName.SNAPPY)
-//                .withValidation(false)
-//                .withDictionaryEncoding(false)
-//                .build();
+	        ParquetWriter<GenericData.Record> writer = AvroParquetWriter.<GenericData.Record>builder(path)
+	                .withRowGroupSize(ParquetWriter.DEFAULT_BLOCK_SIZE)
+	                .withPageSize(ParquetWriter.DEFAULT_PAGE_SIZE)
+	                .withSchema(new AvroSchemaConverter().convert(schema))
+	                .withConf(conf)
+	                .withCompressionCodec(CompressionCodecName.SNAPPY)
+	                .withValidation(false)
+	                .withDictionaryEncoding(false)
+	                .build();
 			
+	        
 	        ///////////Source Data Get
 			Calendar cal = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			if("".equals(sourceTable.get("gijun_date").toString())) {
-				//±âÁØÀÏÀÚ ¾÷À¸¸é Now()-1day
-	    		cal.add(Calendar.DATE,-1); //-1ÀÏÀü µ¥ÀÌÅÍ ÀÌµ¿
+				//Now()-1day
+	    		cal.add(Calendar.DATE,-1); //-1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 			}
 			else {
-				//±âÁØÀÏÀÚ ÀÖÀ¸¸é gijun_date - 1day
+				//gijun_date - 1day
 				cal.setTime(sdf.parse(sourceTable.get("gijun_date").toString()));
 				cal.add(Calendar.DATE,-1);
 			}
 			
-			String gijunStartDT = sdf.format(cal.getTime()) + "000000"; //½ÃÀÛ½Ã°£
-			String gijunEndDT = sdf.format(cal.getTime()) + "235959"; //¸¶Áö¸·½Ã°£
+			String gijunStartDT = sdf.format(cal.getTime()) + "000000"; //ï¿½ï¿½ï¿½Û½Ã°ï¿½
+			String gijunEndDT = sdf.format(cal.getTime()) + "235959"; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½
 
-    		//MySql µ¥ÀÌÅÍ ÁúÀÇ
+    		//MySql
     		String url = "jdbc:mysql://localhost:3306/kakaobank?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false";
     		String user = "root";
     		String password = "Adminsun123!@#";
@@ -171,13 +175,27 @@ public class TestHadoopBuilder {
     		rs = stmt.executeQuery(query.toString());
     		
     		///////////Target Data Set
-    		int a = 0;
+//    		while (rs.next()) {
+//    			writer.write(gf.newGroup().append("LOG_TKTM", rs.getString("LOG_TKTM")));
+//    			writer.write(gf.newGroup().append("LOG_ID", rs.getString("LOG_ID")));
+//    			writer.write(gf.newGroup().append("USR_NO", rs.getString("USR_NO")));
+//    			writer.write(gf.newGroup().append("MENU_NM", rs.getString("MENU_NM")));
+//			}		
+    		
     		while (rs.next()) {
-    			writer.write(gf.newGroup().append("LOG_TKTM", rs.getString("LOG_TKTM")));
-    			writer.write(gf.newGroup().append("LOG_ID", rs.getString("LOG_ID")));
-    			writer.write(gf.newGroup().append("USR_NO", rs.getString("USR_NO")));
-    			writer.write(gf.newGroup().append("MENU_NM", rs.getString("MENU_NM")));
-			}		
+    			GenericData.Record record = new GenericData.Record(new AvroSchemaConverter().convert(schema));
+    			
+    			record.put("LOG_TKTM", rs.getString("LOG_TKTM").getBytes());
+    			record.put("LOG_ID", rs.getString("LOG_ID").getBytes());
+    			record.put("USR_NO", rs.getString("USR_NO").getBytes());
+    			record.put("MENU_NM", rs.getString("MENU_NM").getBytes());
+    			
+    			writer.write(record);
+			}
+    		
+    		if(writer != null) {
+				writer.close();
+			}
     		
     		///////////Source Data Delete
     		query.setLength(0);
@@ -198,9 +216,6 @@ public class TestHadoopBuilder {
 			e.printStackTrace();
 			Assert.fail();
 		} finally { 
-			if(writer != null) {
-				try {writer.close();} catch (IOException e) {e.printStackTrace();}
-				}
 			if (rs != null) {
 				try {rs.close();} catch (SQLException e) {e.printStackTrace();} 
 				}
